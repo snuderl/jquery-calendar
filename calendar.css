@@ -16,6 +16,8 @@ button{
 .date-column{
  width: 80px;
  text-align: center;
+ text-overflow:ellipsis;
+ overflow:hidden;
 }
 .date-column-small{
  width: 25px;

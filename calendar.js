@@ -151,6 +151,9 @@
             if (event !== undefined) {
               day.html(event);
               day.css("background-color", "#3090C7");
+              day.tooltip({
+                title: event
+              });
               day.click((function(num, dayNum) {
                 return function() {
                   removeEvent(num, year, month, dayNum + 1);
