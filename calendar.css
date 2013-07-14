@@ -1,0 +1,35 @@
+
+.calendar-container{
+  margin-left: 10px;
+}
+button{
+  margin-left: 5px;
+}
+.inline{
+  display: inline-block;
+}
+
+.calendar-label{
+  width: 250px;
+  text-align: center;
+}
+.date-column{
+ width: 80px;
+ text-align: center;
+}
+.date-column-small{
+ width: 25px;
+}
+.resource-column{
+  width: 100px;
+}
+
+.resource-name{
+  width:100px;
+}
+.calendar-row{
+  margin-bottom: 5px;
+}
+.clickable{
+  cursor: pointer;
+}
