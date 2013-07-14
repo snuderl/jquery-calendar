@@ -3,17 +3,39 @@
 <head>
 
   <script type="text/javascript" src="jquery-2.0.3.js"></script>
+  <script src="bootstrap/js/bootstrap.js" type="text/javascript"></script>
   <script type="text/javascript" src="calendar.js"></script>
+  <link href="bootstrap/css/bootstrap.css" rel="stylesheet"></link>
+  <link href="calendar.css" rel="stylesheet"></link>
   <script type="text/javascript">
 
   $( document ).ready(function() {
-    $( "#target" ).calendar();
+    $( "#target" ).calendar({data: [{
+      name: "resource1",
+      events:{
+        2013: {
+          6: {1: "dogodek1",
+              3: "dogodek2" },
+          7: {1: "dogodek1",
+              3: "dogodek2"}}
+          }},
+          {
+      name: "resource2",
+      events:{
+        2013: {
+          6: {1: "dogodek1",
+              3: "dogodek2" },
+          7: {1: "dogodek1",
+              3: "dogodek2"}}
+          }}
+    ]}
+    );
   });
   </script>
 </head>
 <body>
-hghg
 <div id="target"></div>
-hghgg
+
+</div>
 </body>
 </html>
