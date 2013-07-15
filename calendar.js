@@ -5,6 +5,10 @@
     var defaults = {
       selectedDate: new Date(),
       displayMode: "week",
+      days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      monthNames: ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ],
       data: [],
     }
 
@@ -17,7 +21,7 @@
     self.container = $('<div class="calendar-container"></div>').appendTo(self);
     self.topBar = $('<div class="topBar"></div>').appendTo(self.container);
     init();
-    setDate(new Date());
+    setDate(options.selectedDate);
 
     function init() {
 
@@ -108,19 +112,18 @@
       self.body.html("");
 
 
-      var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
       $('<div class="inline resource-column">' + bold("Resource") + "</div>").appendTo(legend);
       if (options.displayMode == "week") {
 
         var referenceDate = new Date(date.getTime());
-        referenceDate.setDate(referenceDate.getDate() - date.getDay() - 6);
+        referenceDate.setDate(referenceDate.getDate() - date.getDay() + 1);
         for (var i = 0; i < 7; i++) {
           var tmpDate = new Date(referenceDate.getTime());
           tmpDate.setDate(tmpDate.getDate() + i);
 
           var label = (tmpDate.getMonth() + 1) + "/" + tmpDate.getDate();
-          $('<div class="inline date-column">' + bold(days[tmpDate.getDay()] + " " + label) + "</div>").appendTo(legend);
+          $('<div class="inline date-column">' + bold(options.days[tmpDate.getDay()] + " " + label) + "</div>").appendTo(legend);
         }
 
 
@@ -128,9 +131,6 @@
           var resource = self.data[i];
           var row = $('<div class="calendar-row"></div>').appendTo(self.body);
           $('<div class="inline resource-name">' + bold(resource.name) + "</div>").appendTo(row);
-
-
-          //start at the begining of week
 
           var year = date.getFullYear();
           var month = date.getMonth() + 1;
@@ -210,7 +210,34 @@
         }
       } else {
 
-        var row = $('<div class="calendar-row">Not yet implemented</div>').appendTo(self.body);
+        for (var i = 0; i < self.data.length; i++) {
+          var resource = self.data[i];
+          var row = $('<div class="calendar-row"></div>').appendTo(self.body);
+          $('<div class="inline resource-name">' + resource.name + '</div>').appendTo(row);
+          var year = date.getFullYear();
+          var month = date.getMonth() + 1;
+          var days = findDays(resource, year, month);
+
+          var el = $('<div class="inline date-column-big clickable">&nbsp;</div>').appendTo(row);
+          var event = getDay(days, date.getDate());
+          if (event !== undefined) {
+            el.css("background-color", "#3090C7");
+            el.html(event);
+            el.click((function(num, dayNum) {
+              return function() {
+                removeEvent(num, year, month, dayNum);
+              }
+            })(i, date.getDate()));
+          } else {
+
+            el.click((function(num, dayNum) {
+              return function() {
+                addEvent(num, year, month, dayNum);
+              }
+            })(i, date.getDate()));
+          }
+
+        }
       }
     }
 
@@ -225,28 +252,26 @@
 
     function displayDate() {
       var date = options.selectedDate;
-      var monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-      ];
+
 
       var label = "";
       var mode = options.displayMode;
       if (mode === "week") {
         var referenceDate = new Date(date.getTime());
-        referenceDate.setDate(referenceDate.getDate() - date.getDay() - 6);
-        var label = monthNames[referenceDate.getMonth()] + " " + referenceDate.getDate() + " -- "
+        referenceDate.setDate(referenceDate.getDate() - date.getDay() + 1);
+        var label = options.monthNames[referenceDate.getMonth()] + " " + referenceDate.getDate() + " -- "
         var tmpDate = new Date(referenceDate.getTime());
         tmpDate.setDate(tmpDate.getDate() + 6);
         if (tmpDate.getMonth() === referenceDate.getMonth()) {
           label += tmpDate.getDate() + " " + referenceDate.getFullYear();
         } else {
-          label += " " + monthNames[tmpDate.getMonth()] + " " + tmpDate.getDate() + " " + referenceDate.getFullYear();
+          label += " " + options.monthNames[tmpDate.getMonth()] + " " + tmpDate.getDate() + " " + referenceDate.getFullYear();
         }
 
       } else if (mode === "month") {
-        label = monthNames[date.getMonth()] + "  " + date.getFullYear();
+        label = options.monthNames[date.getMonth()] + "  " + date.getFullYear();
       } else {
-        label = monthNames[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear();
+        label = options.monthNames[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear();
       }
 
       self.dateLabel.html("<strong>" + label + "</strong>");

@@ -35,3 +35,6 @@ button{
 .clickable{
   cursor: pointer;
 }
+.date-column-big{
+  width: 200px;
+}

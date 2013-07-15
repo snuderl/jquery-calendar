@@ -31,11 +31,26 @@
           }}
     ]}
     );
+
+
+  $( "#target1" ).calendar({selectedDate: new Date(2013,7,0),
+                            days: ["Ned","Pot", "Tor", "Sre", "Cet", "Pet", "Sob"],
+                            data: [{
+      name: "resource1",
+      events:{
+        2013: {
+          7: {29: "dogodek1",
+              31: "dogodek2"}}
+          }}]});
   });
+
   </script>
 </head>
 <body>
+
 <div id="target"></div>
+<br><br>
+<div id="target1"></div>
 
 </div>
 </body>
